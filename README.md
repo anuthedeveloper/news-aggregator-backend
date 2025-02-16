@@ -37,3 +37,5 @@ To check the container running
 ```
 docker ps
 ```
+
+Access the Backend via localhost:8080
