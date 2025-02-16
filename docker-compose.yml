@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  laravel:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: laravel-app
+    container_name: laravel-container
+    ports:
+      - "8000:9000"
+    volumes:
+      - .:/var/www
+      - ./database/database.sqlite:/var/www/database/database.sqlite
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - APP_KEY=base64:wBPtGTGRXMd3Oaqkt79DMlX03da0axKql7hwtxODyxI=
+      - APP_URL=http://localhost
+      - JWT_SECRET=klbwp7hEKwy2iodSSUemNdE2oC5orRks49BHbGz3Ud7Ph8xFigve0fHQwadMF1IM
+      - THE_GUARDIAN_API_KEY=e546972d-07ce-47f4-aa85-3cb4bafa0683
+      - NEWYORK_API_KEY=xKLXyaMLOYZeAA6BnAaGwpBTUzhGn6Hb
+      - BBC_API_KEY=53260b5ac55445c3a17faed380d503e4
+    depends_on:
+      - db
+
+  webserver:
+    image: nginx:alpine
+    container_name: nginx-container
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - laravel
+
+  db:
+    image: nouchka/sqlite3
+    container_name: sqlite-container
+    volumes:
+      - ./database:/data
+    command: tail -f /dev/null
