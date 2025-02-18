@@ -39,3 +39,7 @@ docker ps
 ```
 
 Access the Backend via localhost:8080
+Public view: 
+```
+docker pull anuthedeveloper/laravel-app:v1
+```
